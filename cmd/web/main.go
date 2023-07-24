@@ -30,19 +30,11 @@ func main(){
 		infoLog: infoLog,
 		errorLog: errorLog,
 	}
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/post", app.showPost)
-	mux.HandleFunc("/post/create", app.createPost)
-
-	fileServer := http.FileServer(http.Dir("./ui/static"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-
+	
 	server := &http.Server{
 		Addr: *addr,
 		ErrorLog: errorLog,
-		Handler: mux,
+		Handler: app.routes(),
 
 	}
 

@@ -44,8 +44,6 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost{
 		w.Header().Set("Allow", http.MethodPost)
-		//w.WriteHeader(405)
-		//w.Write([]byte("Method Not Allowed"))
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
