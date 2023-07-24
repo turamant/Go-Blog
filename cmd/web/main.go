@@ -6,12 +6,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/turamant/Go-Blog/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql"
+
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog *log.Logger
+	posts *mysql.PostModel
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -49,6 +53,7 @@ func main(){
 	app := &application{
 		infoLog: infoLog,
 		errorLog: errorLog,
+		posts: &mysql.PostModel{DB: db},
 	}
 	
 	server := &http.Server{
