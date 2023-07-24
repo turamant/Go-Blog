@@ -1,2 +1,9 @@
 signal: interrupt
 signal: interrupt
+signal: interrupt
+signal: interrupt
+signal: interrupt
+signal: interrupt
+ERROR	2023/07/24 22:12:31 main.go:28: listen tcp :8000: bind: address already in use
+exit status 1
+signal: interrupt
