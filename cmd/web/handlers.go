@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+	"github.com/turamant/Go-Blog/pkg/models"
 
 )
 
@@ -36,9 +38,17 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil || id < 1{
 		app.notFound(w)
 		return
-
 	}
-	fmt.Fprintf(w, "This is specific post id: %d", id)
+	s, err := app.posts.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+	return
+	}
+	fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
