@@ -3,11 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/turamant/Go-Blog/pkg/models"
 	"html/template"
 	"net/http"
 	"strconv"
-	"github.com/turamant/Go-Blog/pkg/models"
-
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +15,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string {
+	files := []string{
 		"./ui/html/home.page.html",
 		"./ui/html/base.layout.html",
 		"./ui/html/footer.partial.html",
@@ -35,7 +34,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	if err != nil || id < 1{
+	if err != nil || id < 1 {
 		app.notFound(w)
 		return
 	}
@@ -46,13 +45,13 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		} else {
 			app.serverError(w, err)
 		}
-	return
+		return
 	}
 	fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost{
+	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
@@ -64,8 +63,7 @@ func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
 	id, err := app.posts.Insert(title, content, expires)
 	if err != nil {
 		app.serverError(w, err)
-	return
+		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/post?id=%d", id), http.StatusSeeOther)
 }
-

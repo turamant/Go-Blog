@@ -7,15 +7,14 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/turamant/Go-Blog/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql"
-
+	"github.com/turamant/Go-Blog/pkg/models/mysql"
 )
 
 type application struct {
 	errorLog *log.Logger
-	infoLog *log.Logger
-	posts *mysql.PostModel
+	infoLog  *log.Logger
+	posts    *mysql.PostModel
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -29,8 +28,7 @@ func openDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-
-func main(){
+func main() {
 	addr := flag.String("addr", ":8000", "http network address")
 	dsn := flag.String("dsn", "web:pass@/goblog?parseTime=true", "MySQL data source name")
 	flag.Parse()
@@ -43,28 +41,27 @@ func main(){
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-    
+
 	db, err := openDB(*dsn)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
-	
+
 	db.SetMaxOpenConns(100)
 	db.SetMaxIdleConns(5)
 
 	defer db.Close()
 
 	app := &application{
-		infoLog: infoLog,
+		infoLog:  infoLog,
 		errorLog: errorLog,
-		posts: &mysql.PostModel{DB: db},
+		posts:    &mysql.PostModel{DB: db},
 	}
-	
-	server := &http.Server{
-		Addr: *addr,
-		ErrorLog: errorLog,
-		Handler: app.routes(),
 
+	server := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  app.routes(),
 	}
 
 	infoLog.Printf("Server start port: %s", *addr)
