@@ -48,6 +48,10 @@ func main(){
 	if err != nil {
 		errorLog.Fatal(err)
 	}
+	
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(5)
+
 	defer db.Close()
 
 	app := &application{

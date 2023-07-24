@@ -45,5 +45,25 @@ func (m *PostModel) Get(id int) (*models.Post, error) {
 
 // This will return the 10 most recently created snippets.
 func (m *PostModel) Latest() ([]*models.Post, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires FROM posts 
+	WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	posts := []*models.Post{}
+	for rows.Next() {
+		s := &models.Post{}
+		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+		if err != nil {
+			return nil, err
+		}	
+		posts = append(posts, s)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
 }

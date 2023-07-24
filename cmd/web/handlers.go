@@ -68,3 +68,4 @@ func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, fmt.Sprintf("/post?id=%d", id), http.StatusSeeOther)
 }
+
