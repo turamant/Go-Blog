@@ -2,3 +2,7 @@
 signal: interrupt
 signal: interrupt
 signal: interrupt
+signal: interrupt
+signal: interrupt
+ERROR	2023/07/24 23:23:06 main.go:45: Error 1044 (42000): Access denied for user 'web'@'localhost' to database 'snippetbox'
+exit status 1
