@@ -10,7 +10,18 @@ import (
 )
 
 func (app *application) last(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("pass")
+	if r.URL.Path == "/" {
+		app.notFound(w)
+		return
+	}
+	p, err := app.posts.Latest()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	for _, post := range p {
+		fmt.Fprintf(w, "%v\n", post)
+	}
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +53,7 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	s, err := app.posts.Get(id)
+	p, err := app.posts.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
@@ -51,7 +62,23 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	fmt.Fprintf(w, "%v", s)
+	data := &templateData{Post: p}
+	files := []string{
+		"./ui/html/show.page.html",
+		"./ui/html/base.layout.html",
+		"./ui/html/footer.partial.html",
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	err = ts.Execute(w, data)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	//fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
