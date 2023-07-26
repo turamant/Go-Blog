@@ -3,10 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/turamant/Go-Blog/pkg/models"
-	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/turamant/Go-Blog/pkg/models"
+
 )
 
 
@@ -20,22 +21,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	data := &templateData{Posts: p}
-	files := []string{
-		"./ui/html/home.page.html",
-		"./ui/html/base.layout.html",
-		"./ui/html/footer.partial.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, r, "home.page.html", &templateData{Posts: p})
 }
 
 func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
@@ -53,23 +39,8 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	data := &templateData{Post: p}
-	files := []string{
-		"./ui/html/show.page.html",
-		"./ui/html/base.layout.html",
-		"./ui/html/footer.partial.html",
-	}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, r, "show.page.html", &templateData{Post: p})
 
-	//fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
