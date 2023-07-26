@@ -8,8 +8,9 @@ import (
 )
 
 type templateData struct {
-	Post *models.Post
-	Posts []*models.Post
+	CurrentYear int
+	Post 		*models.Post
+	Posts 		[]*models.Post
 }
 
 

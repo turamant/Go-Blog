@@ -13,10 +13,10 @@ import (
 )
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	posts    *mysql.PostModel
-	templateCache map[string]*template.Template
+	errorLog 		*log.Logger
+	infoLog  		*log.Logger
+	posts    		*mysql.PostModel
+	templateCache 	map[string]*template.Template
 }
 
 func openDB(dsn string) (*sql.DB, error) {
