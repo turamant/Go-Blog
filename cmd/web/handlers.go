@@ -17,8 +17,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	panic("oops! something went wrong") // Deliberate panic
-	
 	p, err := app.posts.Latest()
 	if err != nil {
 		app.serverError(w, err)
