@@ -31,7 +31,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, name stri
 
 	buf := new(bytes.Buffer)
 
-	err := ts.Execute(buf, td)
+	err := ts.Execute(buf, app.addDefaultData(td, r))
 	if err != nil {
 		app.serverError(w, err)
 		return
