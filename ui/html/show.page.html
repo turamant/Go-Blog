@@ -9,8 +9,8 @@
   </div>
     <h6 class="card-subtitle mb-2 text-muted"></h6>
     <p class="card-text"><pre><code>{{.Post.Content}}</code></pre></p>
-    <a href="#" class="card-link"><time>Created: {{.Post.Created }}</time></a>
-    <a href="#" class="card-link"><time>Expires: {{.Post.Expires}}</time></a>
+    <a href="#" class="card-link"><time>Created: {{humanDate .Post.Created }}</time></a>
+    <a href="#" class="card-link"><time>Expires: {{.Post.Expires | humanDate }}</time></a>
   </div>
 </div>
 
