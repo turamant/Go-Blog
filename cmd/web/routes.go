@@ -2,24 +2,26 @@ package main
 
 import (
 	"net/http"
+	"github.com/bmizerany/pat"
 
 	"github.com/justinas/alice"
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/v5/middleware"
+	
 )
 
 func (app *application) routes() http.Handler {
 
 	standartMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Get("/", app.home)
-	r.Get("/post", app.showPost)
-	r.Post("/post/create", app.createPost)
+	mux := pat.New()
+	mux.Get("/", http.HandlerFunc(app.home))
+	mux.Get("/post/create", http.HandlerFunc(app.createPostForm))
+	mux.Post("/post/create", http.HandlerFunc(app.createPost))
+	mux.Get("/post/:id", http.HandlerFunc(app.showPost))		
+	
+	
 
 	fileServer := http.FileServer(http.Dir("./ui/static"))
-	r.Handle("/static/", http.StripPrefix("/static", fileServer))
+	mux.Get("/static/", http.StripPrefix("/static", fileServer))
 	
-	return standartMiddleware.Then(r)
+	return standartMiddleware.Then(mux)
 }
