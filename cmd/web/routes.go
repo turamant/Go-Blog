@@ -4,19 +4,20 @@ import (
 	"net/http"
 
 	"github.com/justinas/alice"
+	"github.com/go-chi/chi"
 )
 
 func (app *application) routes() http.Handler {
 
 	standartMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/post", app.showPost)
-	mux.HandleFunc("/post/create", app.createPost)
+	r := chi.NewRouter()
+	r.Get("/", app.home)
+	r.Get("/post", app.showPost)
+	r.Post("/post/create", app.createPost)
 
 	fileServer := http.FileServer(http.Dir("./ui/static"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+	r.Handle("/static/", http.StripPrefix("/static", fileServer))
 	
-	return standartMiddleware.Then(mux)
+	return standartMiddleware.Then(r)
 }
