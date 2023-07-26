@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +16,7 @@ type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
 	posts    *mysql.PostModel
+	templateCache map[string]*template.Template
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -52,10 +54,16 @@ func main() {
 
 	defer db.Close()
 
+	templateCache, err := newTemplateCache("./ui/html/")
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	app := &application{
 		infoLog:  infoLog,
 		errorLog: errorLog,
 		posts:    &mysql.PostModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	server := &http.Server{
