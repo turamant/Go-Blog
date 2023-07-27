@@ -40,10 +40,9 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	flash := app.session.PopString(r, "flash")
+	
 	app.render(w, r, "show.page.html", &templateData{
 		Post: p,
-		Flash: flash,
 	})
 
 }
