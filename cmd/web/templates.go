@@ -11,11 +11,12 @@ import (
 )
 
 type templateData struct {
-	CurrentYear int
-	Flash 		string
-	Form 		*forms.Form
-	Post 		*models.Post
-	Posts 		[]*models.Post
+	CurrentYear 		int
+	Flash 				string
+	Form 				*forms.Form
+	IsAuthenticated 	bool
+	Post 				*models.Post
+	Posts 				[]*models.Post
 }
 
 var functions = template.FuncMap{
