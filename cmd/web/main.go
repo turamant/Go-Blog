@@ -21,6 +21,7 @@ type application struct {
 	session			*sessions.Session
 	posts    		*mysql.PostModel
 	templateCache 	map[string]*template.Template
+	users			*mysql.UserModel
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -69,11 +70,13 @@ func main() {
 	session.Secure = true
 	
 	app := &application{
-		infoLog:  infoLog,
-		errorLog: errorLog,
-		session: session,
-		posts:    &mysql.PostModel{DB: db},
-		templateCache: templateCache,
+		infoLog:  		infoLog,
+		errorLog: 		errorLog,
+		session: 		session,
+		posts:    		&mysql.PostModel{DB: db},
+		templateCache: 	templateCache,
+		users: 			&mysql.UserModel{DB: db},
+
 	}
 
 	tlsConfig := &tls.Config{
