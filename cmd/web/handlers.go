@@ -27,9 +27,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
-	
 	if err != nil || id < 1 {
-		fmt.Printf("-?????--%d----%s",id, err)
 		app.notFound(w)
 		return
 	}
@@ -42,7 +40,11 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	app.render(w, r, "show.page.html", &templateData{Post: p})
+	flash := app.session.PopString(r, "flash")
+	app.render(w, r, "show.page.html", &templateData{
+		Post: p,
+		Flash: flash,
+	})
 
 }
 
@@ -67,6 +69,7 @@ func (app *application) createPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+	app.session.Put(r,"flash", "Post successfully created!")
 	http.Redirect(w, r, fmt.Sprintf("/post/%d", id), http.StatusSeeOther)
 }
 
