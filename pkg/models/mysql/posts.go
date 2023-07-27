@@ -67,3 +67,27 @@ func (m *PostModel) Latest() ([]*models.Post, error) {
 
 	return posts, nil
 }
+
+func (m *PostModel) All() ([]*models.Post, error) {
+	stmt := `SELECT id, title, content, created, expires FROM posts`
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	posts := []*models.Post{}
+	for rows.Next() {
+		s := &models.Post{}
+		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, s)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+

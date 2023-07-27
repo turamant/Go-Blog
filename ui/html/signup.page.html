@@ -1,32 +1,39 @@
 {{template "base" .}}
 {{define "title"}}Signup{{end}}
 {{define "main"}}
-<form action='/user/signup' method='POST' novalidate>
+<p class="mt-5 text-center fs-1 fw-bold">Sign Up</p>
+<form class="form-horizontal" action='/user/signup' method='POST' novalidate>
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}}
-        <div>
-            <label>Name:</label>
+        <div class="row justify-content-center">
+            <label class="control-label text-center">Name:</label>
             {{with .Errors.Get "name"}}
-                <label class='error'>{{.}}</label>
+                <label class="alert alert-danger">{{.}}</label>
             {{end}}
-            <input type='text' name='name' value='{{.Get "name"}}'>
+            <div class="col-sm-5">
+                <input type='text' class="form-control" name='name' value='{{.Get "name"}}'>
+            </div>
         </div>
-        <div>
-            <label>Email:</label>
+        <div class="row justify-content-center">
+            <label class="control-label text-center mt-2">Email:</label>
             {{with .Errors.Get "email"}}
-                <label class='error'>{{.}}</label>
+                <label class="alert alert-danger">{{.}}</label>
             {{end}}
-            <input type='email' name='email' value='{{.Get "email"}}'>
+            <div class="col-sm-5">
+                <input type='email' class="form-control" name='email' value='{{.Get "email"}}'>
+            </div>
         </div>
-        <div>
-            <label>Password:</label>
+        <div class="row justify-content-center">
+            <label class="control-label text-center mt-2">Password:</label>
             {{with .Errors.Get "password"}}
-                <label class='error'>{{.}}</label>
+                <label class="alert alert-danger">{{.}}</label>
             {{end}}
-            <input type='password' name='password'>
+            <div class="col-sm-5">
+                <input type='password' class="form-control" name='password'>
+            </div>
         </div>
-        <div>
-            <input type='submit' value='Signup'>
+        <div class="mb-5 mt-5 text-center">
+            <input type='submit' class="btn btn-primary" value='Signup'>
         </div>
     {{end}}
 </form>

@@ -12,17 +12,22 @@ import (
 
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	// if r.URL.Path != "/" {
-	// 	app.notFound(w)
-	// 	return
-	// }
+	p, err := app.posts.All()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.render(w, r, "home.page.html", &templateData{Posts: p})
+}
 
+func (app *application) latestPost(w http.ResponseWriter, r *http.Request){
 	p, err := app.posts.Latest()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 	app.render(w, r, "home.page.html", &templateData{Posts: p})
+
 }
 
 func (app *application) showPost(w http.ResponseWriter, r *http.Request) {

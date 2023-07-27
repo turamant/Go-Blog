@@ -15,6 +15,7 @@ func (app *application) routes() http.Handler {
 
 	mux := pat.New()
 	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
+	mux.Get("/latest", dynamicMiddleware.ThenFunc(app.latestPost))
 	mux.Get("/post/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createPostForm))
 	mux.Post("/post/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createPost))
 	mux.Get("/post/:id", dynamicMiddleware.ThenFunc(app.showPost))		

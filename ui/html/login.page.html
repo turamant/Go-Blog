@@ -1,24 +1,29 @@
 {{template "base" .}}
 {{define "title"}}Login{{end}}
 {{define "main"}}
-<form action='/user/login' method='POST' novalidate>
+<p class="mt-5 text-center fs-1 fw-bold">Log In</p>
+<form class="form-horizontal" action='/user/login' method='POST' novalidate>
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}}
         {{with .Errors.Get "generic"}}
-            <div class='error'>{{.}}</div>
+            <div class="alert alert-danger">{{.}}</div>
         {{end}}
-        <div>
-            <label>Email:</label>
-            <input type='email' name='email' value='{{.Get "email"}}'>
+        <div class="row justify-content-center">
+            <label class="control-label text-center">Email:</label>
+            <div class="col-sm-5">
+                <input type='email' class="form-control" name='email' value='{{.Get "email"}}'>
+            </div>
+            <div id="emailHelp" class="form-text text-center">We'll never share your email with anyone else.</div>
         </div>
-        <div>
-            <label>Password:</label>
-            <input type='password' name='password'>
+        <div class="row justify-content-center">
+            <label class="control-label text-center mt-5">Password:</label>
+            <div class="col-sm-5">
+                <input type='password' class="form-control" name='password'>
+            </div>
         </div>
-        <div>
-            <input type='submit' value='Login'>
+        <div class="mb-5 mt-5 text-center">
+            <input type='submit' class="btn btn-primary" value='Login'>
         </div>
     {{end}}
 </form>
 {{end}}
-Notice h

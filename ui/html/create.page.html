@@ -1,36 +1,46 @@
 {{template "base" .}}
 {{define "title"}}Create a New Post{{end}}
 {{define "main"}}
-<form action='/post/create' method='POST'>
+<p class="mt-5 text-center fs-1 fw-bold">Create Post</p>
+<form class="form-horizontal" action='/post/create' method='POST'>
     <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}}
-        <div>
-            <label>Title:</label>
+        <div class="row justify-content-center">
+            <label class="control-label text-center">Title:</label>
             {{with .Errors.Get "title"}}
-                <label class='error'>{{.}}</label>
+                <label class="alert alert-danger">{{.}}</label>
             {{end}}
-            <input type='text' name='title' value='{{.Get "title"}}'>
+            <div class="col-sm-5">
+                <input type='text' class="form-control" maxlength="150" name='title' value='{{.Get "title"}}'>
+            </div>
         </div>
-        <div>
-            <label>Content:</label>
-            {{with .Errors.Get "content"}}
-                <label class='error'>{{.}}</label>
-            {{end}}
-            <textarea name='content'>{{.Get "content"}}</textarea>
+        <div class="row justify-content-center">
+            <label class="mt-2 control-label text-center">Content:</label>
+            <div class="row justify-content-center form-floating">
+                {{with .Errors.Get "content"}}
+                <div class="alert alert-danger alert-dismissible">
+                    <label>{{.}}</label>
+                </div>
+                {{end}}
+                <div class="col-sm-5 text-center">
+                    <textarea class="form-control" rows="5" placeholder="Leave a post here" name='content'>{{.Get "content"}}</textarea>
+                </div>
+            </div>
         </div>
-        <div>
-            <label>Delete in:</label>
+        <div class="form-check mb-2 mt-2 text-center">
+            <label class="form-label">Delete in:</label>
             {{with .Errors.Get "expires"}}
-                <label class='error'>{{.}}</label>
+                <label class="alert alert-danger">{{.}}</label>
             {{end}}
             {{$exp := or (.Get "expires") "365"}}
             <input type='radio' name='expires' value='365' {{if (eq $exp "365")}}checked{{end}}> One Year
             <input type='radio' name='expires' value='7' {{if (eq $exp "7")}}checked{{end}}> One Week
             <input type='radio' name='expires' value='1' {{if (eq $exp "1")}}checked{{end}}> One Day
         </div>
-        <div>
-            <input type='submit' value='Publish post'>
+        <div class="text-center">
+            <input type='submit' class="btn btn-primary" value='Publish post'>
         </div>
     {{end}}
+
 </form>
 {{end}}

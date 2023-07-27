@@ -7,7 +7,7 @@
         <title>{{template "title" .}} - Go-Blog</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,10 +26,7 @@
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            
             {{if .IsAuthenticated}}
             <form action='/user/logout' method='POST' class="form-inline my-2 my-lg-0" >
                 <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
@@ -50,7 +47,7 @@
         </nav>
         <main>
             {{ with .Flash}}
-            <div class='flash'>{{.}}</div>
+            <div class="alert alert-info"><i>{{.}}</i></div>
             {{end}}
             {{template "main" .}}
         </main>
