@@ -17,9 +17,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
                 </li>
+                {{if .IsAuthenticated}}
                 <li class="nav-item">
                     <a class="nav-link" href="/post/create">Create post</a>
                 </li>
+                {{end}}
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
@@ -28,6 +30,11 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
+            {{if .IsAuthenticated}}
+            <form action='/user/logout' method='POST' class="form-inline my-2 my-lg-0" >
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+            {{else}}
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="/user/signup">Signup</a>
@@ -36,9 +43,8 @@
                     <a class="nav-link" href="/user/login">Login</a>
                 </li>
             </ul>
-            <form action='/user/logout' method='POST' class="form-inline my-2 my-lg-0" >
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-            </form>
+            {{end}}
+            
         </div>
         </nav>
         <main>
