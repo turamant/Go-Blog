@@ -7,14 +7,17 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/turamant/Go-Blog/pkg/models/mysql"
+	"github.com/golangcollege/sessions" 
 )
 
 type application struct {
 	errorLog 		*log.Logger
 	infoLog  		*log.Logger
+	session			*sessions.Session
 	posts    		*mysql.PostModel
 	templateCache 	map[string]*template.Template
 }
@@ -33,6 +36,7 @@ func openDB(dsn string) (*sql.DB, error) {
 func main() {
 	addr := flag.String("addr", ":8000", "http network address")
 	dsn := flag.String("dsn", "web:pass@/goblog?parseTime=true", "MySQL data source name")
+	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
 	flag.Parse()
 
 	// f, err := os.OpenFile("./tmp/info.log", os.O_RDWR|os.O_CREATE, 0666)
@@ -58,10 +62,14 @@ func main() {
 	if err != nil {
 		errorLog.Fatal(err)
 	}
-
+	
+	session := sessions.New([]byte(*secret))
+	session.Lifetime = 12 * time.Hour
+	
 	app := &application{
 		infoLog:  infoLog,
 		errorLog: errorLog,
+		session: session,
 		posts:    &mysql.PostModel{DB: db},
 		templateCache: templateCache,
 	}
