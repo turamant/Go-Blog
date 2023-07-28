@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -17,7 +18,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.render(w, r, "home.page.html", &templateData{Posts: p})
+	app.render(w, r, "home.page.html", &templateData{
+		Posts: p,
+	})
 }
 
 func (app *application) latestPost(w http.ResponseWriter, r *http.Request){

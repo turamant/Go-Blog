@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"html/template"
 	"path/filepath"
