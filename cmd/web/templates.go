@@ -17,6 +17,7 @@ type templateData struct {
 	IsAuthenticated 	bool
 	Post 				*models.Post
 	Posts 				[]*models.Post
+
 }
 
 var functions = template.FuncMap{
